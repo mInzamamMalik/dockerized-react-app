@@ -1,13 +1,17 @@
-FROM python:latest
+# FROM node:carbon-alpine
+FROM node:boron-alpine
 
-COPY ./requirements.txt /tmp/requirements.txt
-RUN pip install --no-cache-dir -q -r /tmp/requirements.txt
+WORKDIR /usr/src
+
+COPY ./web-app/package.json ./
+COPY ./web-app/package-lock.json ./
+
+RUN npm install
 
 ENV PORT=5000
 EXPOSE $PORT
 
-WORKDIR /usr/src
-COPY ./ ./
+COPY ./web-app ./
 
-CMD ["python","app.py"]
+CMD ["npm", "run", "prod"]
 
